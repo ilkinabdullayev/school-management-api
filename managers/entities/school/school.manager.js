@@ -35,12 +35,12 @@ module.exports = class School {
         return await this.mongomodels.school.find();
     }
 
-    async __updateSchool({__query, __superAdmin, name, fullAddress, res}){
+    async __updateSchool({__id, __superAdmin, name, fullAddress, res}){
         const updatedSchool = {name, fullAddress };
         const result = await this.validators.school.update(updatedSchool);
         if(result) return { error : result };
 
-        let school =  await this.mongomodels.school.findById(__query.id);
+        let school =  await this.mongomodels.school.findById(__id);
         if (!school) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -54,8 +54,8 @@ module.exports = class School {
         return await school.save();
     }
 
-    async __deleteSchool({__superAdmin, __query, res}){
-        let school =  await this.mongomodels.school.findById(__query.id);
+    async __deleteSchool({__superAdmin, __id, res}){
+        let school =  await this.mongomodels.school.findById(__id);
         if (!school) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -64,7 +64,7 @@ module.exports = class School {
             return { selfHandleResponse: true };
         }
 
-        await school.deleteOne( { id: __query.id });
+        await school.deleteOne( { id: __id });
         return school;
     }
 }

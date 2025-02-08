@@ -75,12 +75,12 @@ module.exports = class User {
         return await this.mongomodels.user.find();
     }
 
-    async __updateUser({__query, __superAdmin, role, username, email, password, res}){
+    async __updateUser({__id, __superAdmin, role, username, email, password, res}){
         const updatedUser = {username, email, password, role};
         const result = await this.validators.user.update(updatedUser);
         if(result) return { error : result };
 
-        let user =  await this.mongomodels.user.findById(__query.id);
+        let user =  await this.mongomodels.user.findById(__id);
         if (!user) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -108,8 +108,8 @@ module.exports = class User {
         }
     }
 
-    async __deleteUser({__superAdmin, __query, res}){
-        let user =  await this.mongomodels.user.findById(__query.id);
+    async __deleteUser({__superAdmin, __id, res}){
+        let user =  await this.mongomodels.user.findById(__id);
         if (!user) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -118,7 +118,7 @@ module.exports = class User {
             return { selfHandleResponse: true };
         }
 
-        await user.deleteOne( { email: __query.email });
+        await user.deleteOne( { id: __id });
         return user;
     }
 

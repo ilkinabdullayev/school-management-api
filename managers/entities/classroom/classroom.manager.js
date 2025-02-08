@@ -13,7 +13,10 @@ module.exports = class Classroom {
             '__createClassroom',
             'get=__getAllClassrooms',
             'delete=__deleteClassroom',
-            'put=__updateClassroom'];
+            'enroll',
+            'unregister',
+            'put=__updateClassroom'
+        ];
     }
 
     async __createClassroom({ __token, name, schoolId, capacity, resources, res }){
@@ -43,12 +46,12 @@ module.exports = class Classroom {
         return await this.mongomodels.classroom.find();
     }
 
-    async __updateClassroom({__token, __query, name, schoolId, capacity, resources, res}){
+    async __updateClassroom({__token, __id, name, schoolId, capacity, resources, res}){
         const updatedClassroom = { name, schoolId, capacity, resources };
         const result = await this.validators.classroom.update(updatedClassroom);
         if(result) return { error : result };
 
-        let classroom =  await this.mongomodels.classroom.findById(__query.id);
+        let classroom =  await this.mongomodels.classroom.findById(__id);
         if (!classroom) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -73,8 +76,8 @@ module.exports = class Classroom {
         return await classroom.save();
     }
 
-    async __deleteClassroom({__token, __query, res}){
-        let classroom =  await this.mongomodels.classroom.findById(__query.id);
+    async __deleteClassroom({__token, __id, res}){
+        let classroom =  await this.mongomodels.classroom.findById(__id);
         if (!classroom) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -83,7 +86,68 @@ module.exports = class Classroom {
             return { selfHandleResponse: true };
         }
 
-        await classroom.deleteOne( { id: __query.id });
+        await classroom.deleteOne( { id: __id });
         return classroom;
+    }
+
+    async enroll({__token, classroomId, studentId, res}){
+        const result = await this.validators.classroom.enroll({ classroomId, studentId });
+        if(result) return { error : result };
+
+        let classroom =  await this.mongomodels.classroom.findById(classroomId);
+        if (!classroom) {
+            this.responseDispatcher.dispatch(res, {
+                code: 404,
+                message: 'Classroom not found',
+            });
+            return { selfHandleResponse: true };
+        }
+
+        let student =  await this.mongomodels.student.findById(studentId);
+        if (!student) {
+            this.responseDispatcher.dispatch(res, {
+                code: 404,
+                message: 'Student not found',
+            });
+            return { selfHandleResponse: true };
+        }
+
+        student.classroomId = classroomId;
+        await student.save();
+
+        const allStudents = await this.mongomodels.student.find({ classroomId });
+        return {
+            classroom,
+            allStudents
+        };
+    }
+
+    async unregister({__token, classroomId, studentId, res}){
+        let classroom =  await this.mongomodels.classroom.findById(classroomId);
+        if (!classroom) {
+            this.responseDispatcher.dispatch(res, {
+                code: 404,
+                message: 'Classroom not found',
+            });
+            return { selfHandleResponse: true };
+        }
+
+        let student =  await this.mongomodels.student.findById(studentId);
+        if (!student) {
+            this.responseDispatcher.dispatch(res, {
+                code: 404,
+                message: 'Student not found',
+            });
+            return { selfHandleResponse: true };
+        }
+
+        student.classroomId = classroomId;
+        await student.save();
+
+        const students = await this.mongomodels.student.find({ classroomId });
+        return {
+            classroom,
+            students
+        };
     }
 }

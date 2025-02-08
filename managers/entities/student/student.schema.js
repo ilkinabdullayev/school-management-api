@@ -1,56 +1,48 @@
 module.exports = {
     create: [
         {
-            path: 'name',
+            path: 'firstname',
             required: true,
         },
         {
-            path: 'schoolId',
+            path: 'lastname',
             required: true,
         },
         {
-            path: 'capacity',
+            path: 'age',
             required: true,
-        }
+        },
+        {
+            path: 'grade',
+            required: true,
+        },
+        {
+            path: 'classroomId',
+            required: true,
+        },
     ],
     update: [
         {
-            path: 'name',
+            path: 'firstname',
             required: true,
         },
         {
-            path: 'schoolId',
+            path: 'lastname',
             required: true,
         },
         {
-            path: 'capacity',
+            path: 'age',
             required: true,
         },
         {
-            path: 'resources',
+            path: 'grade',
             required: true,
-        }
-    ],
-    enroll: [
+        },
         {
             path: 'classroomId',
             required: true,
         },
-        {
-            path: 'studentId',
-            required: true,
-        }
     ],
-    unregister: [
-        {
-            path: 'classroomId',
-            required: true,
-        },
-        {
-            path: 'studentId',
-            required: true,
-        }
-    ]
 }
 
 
