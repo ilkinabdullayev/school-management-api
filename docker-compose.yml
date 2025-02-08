@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  app:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "5111:5111"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/axion
+      - REDIS_URI=redis://redis:6379
+      - LONG_TOKEN_SECRET=${LONG_TOKEN_SECRET}
+      - SHORT_TOKEN_SECRET=${SHORT_TOKEN_SECRET}
+      - NACL_SECRET=${NACL_SECRET}
+    depends_on:
+      - mongo
+      - redis
   redis:
     image: redis:latest
     container_name: redis
