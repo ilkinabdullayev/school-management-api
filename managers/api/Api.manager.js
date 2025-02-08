@@ -27,13 +27,14 @@ module.exports = class ApiHandler {
         this.mw            = this.mw.bind(this);
 
         /** filter only the modules that have interceptors */
-        // console.log(`# Http API`);
+        this.methodMatrix['httpCollectionMap'] = {}
         Object.keys(this.managers).forEach(mk=>{
             if(this.managers[mk][this.prop]){
-                // console.log('managers - mk ', this.managers[mk])
+              //   console.log('managers - mk ', this.managers[mk])
                 this.methodMatrix[mk]={};
                 // console.log(`## ${mk}`);
                 this.managers[mk][this.prop].forEach(i=>{
+                    this.methodMatrix['httpCollectionMap'][this.managers[mk]['httpCollection'] ?? mk] = mk;
                     /** creating the method matrix */
                     let method = 'post';
                     let fnName = i;
@@ -45,8 +46,15 @@ module.exports = class ApiHandler {
                     if(!this.methodMatrix[mk][method]){
                         this.methodMatrix[mk][method]=[];
                     }
-                    this.methodMatrix[mk][method].push(fnName);
 
+                    if (fnName.startsWith("__")) {
+                        const foundDefault = this.methodMatrix[mk][method].find(m => m.startsWith("__"));
+                        if (foundDefault) {
+                            throw Error(`${method} already have one default ${foundDefault}; You can't add ${fnName}`);
+                        }
+                    }
+
+                    this.methodMatrix[mk][method].push(fnName);
                     let params = getParamNames(this.managers[mk][fnName], fnName, mk);
                     params = params.split(',').map(i=>{
                         i=i.trim();
@@ -125,18 +133,26 @@ module.exports = class ApiHandler {
     async mw(req, res, next){
 
         let method        = req.method.toLowerCase();
-        let moduleName    = req.params.moduleName;
+        let httpCollection    = req.params.httpCollection;
         let context       = req.params.context;
         let fnName        = req.params.fnName;
+        let moduleName    = this.methodMatrix['httpCollectionMap'][httpCollection];
         let moduleMatrix  = this.methodMatrix[moduleName];
 
         /** validate module */
         if(!moduleMatrix) return this.managers.responseDispatcher.dispatch(res, {ok: false, message: `module ${moduleName} not found`});
-        
+
         /** validate method */
         if(!moduleMatrix[method]){
             return this.managers.responseDispatcher.dispatch(res, {ok: false, message: `unsupported method ${method} for ${moduleName}`});
         }
+
+        if (!fnName) {
+            fnName = moduleMatrix[method].find(m => m.startsWith('__'))
+        }
+
+      //   console.log('moduleName', moduleName)
+      //   console.log('fnName', fnName)
 
         if(!moduleMatrix[method].includes(fnName)){
             return this.managers.responseDispatcher.dispatch(res, {ok: false, message: `unable to find function ${fnName} with method ${method}`});
