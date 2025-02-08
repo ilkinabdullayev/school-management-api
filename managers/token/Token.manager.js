@@ -66,8 +66,6 @@ module.exports = class TokenManager {
 
 
         let decoded = __longToken;
-        console.log(decoded);
-        
         let shortToken = this.genShortToken({
             userId: decoded.userId, 
             userKey: decoded.userKey,

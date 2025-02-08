@@ -10,7 +10,6 @@ module.exports = class User {
         this.tokenManager        = managers.token;
         this.role               =  managers.role;
         this.responseDispatcher = managers.responseDispatcher;
-        this.userExposed         = ['createUser'];
         this.httpCollection     = "users";
         this.httpExposed         = [
             '__createUser',
@@ -67,7 +66,12 @@ module.exports = class User {
         return await this.mongomodels.user.findOne({ _id: __token.userId });
     }
 
-    async __getAllUsers({__superAdmin}){
+    async __getAllUsers({__superAdmin, __query}){
+        const { id } = __query;
+        if (id) {
+            return await this.mongomodels.user.findById(id);
+        }
+
         return await this.mongomodels.user.find();
     }
 
@@ -76,7 +80,7 @@ module.exports = class User {
         const result = await this.validators.user.update(updatedUser);
         if(result) return { error : result };
 
-        let user =  await this.mongomodels.user.findOne({ email: __query.email });
+        let user =  await this.mongomodels.user.findById(__query.id);
         if (!user) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -89,13 +93,24 @@ module.exports = class User {
         user.email = updatedUser.email;
         user.username = updatedUser.username;
         user.role = updatedUser.role;
-        user = await user.save();
 
-        return user;
+        try {
+            user = await user.save();
+            return user;
+        } catch (e) {
+            if (e.errorResponse.code === 11000) {
+                this.responseDispatcher.dispatch(res, {
+                    code: 409,
+                    message: 'User already exist',
+                });
+                return { selfHandleResponse: true };
+            }
+        }
     }
 
     async __deleteUser({__query, res}){
-        let user =  await this.mongomodels.user.findOne({ email: __query.email });
+        console.log(__query.id)
+        let user =  await this.mongomodels.user.findById(__query.id);
         if (!user) {
             this.responseDispatcher.dispatch(res, {
                 code: 404,
@@ -104,7 +119,8 @@ module.exports = class User {
             return { selfHandleResponse: true };
         }
 
-        return await user.deleteOne( { email: __query.email });
+        await user.deleteOne( { email: __query.email });
+        return user;
     }
 
     async saveUserWithPassword(user, res) {
