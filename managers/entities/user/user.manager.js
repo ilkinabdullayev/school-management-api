@@ -108,8 +108,7 @@ module.exports = class User {
         }
     }
 
-    async __deleteUser({__query, res}){
-        console.log(__query.id)
+    async __deleteUser({__superAdmin, __query, res}){
         let user =  await this.mongomodels.user.findById(__query.id);
         if (!user) {
             this.responseDispatcher.dispatch(res, {

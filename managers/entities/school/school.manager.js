@@ -16,8 +16,8 @@ module.exports = class School {
             'put=__updateSchool'];
     }
 
-    async __createSchool({ __superAdmin, name}){
-        const school = { name };
+    async __createSchool({ __superAdmin, name, fullAddress }){
+        const school = { name, fullAddress };
         const result = await this.validators.school.create(school);
         if(result) return { error : result };
 
@@ -35,10 +35,11 @@ module.exports = class School {
         return await this.mongomodels.school.find();
     }
 
-    async __updateSchool({__query, __superAdmin, name, res}){
-        const updatedSchool = {name};
-        const result = await this.validators.school.update({name});
+    async __updateSchool({__query, __superAdmin, name, fullAddress, res}){
+        const updatedSchool = {name, fullAddress };
+        const result = await this.validators.school.update(updatedSchool);
         if(result) return { error : result };
+
         let school =  await this.mongomodels.school.findById(__query.id);
         if (!school) {
             this.responseDispatcher.dispatch(res, {
@@ -49,10 +50,11 @@ module.exports = class School {
         }
 
         school.name = updatedSchool.name;
+        school.fullAddress = updatedSchool.fullAddress;
         return await school.save();
     }
 
-    async __deleteSchool({__query, res}){
+    async __deleteSchool({__superAdmin, __query, res}){
         let school =  await this.mongomodels.school.findById(__query.id);
         if (!school) {
             this.responseDispatcher.dispatch(res, {

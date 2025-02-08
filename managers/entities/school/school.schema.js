@@ -1,5 +1,3 @@
-
-
 module.exports = {
     create: [
         {
@@ -11,8 +9,12 @@ module.exports = {
         {
             path: 'name',
             required: true,
+        },
+        {
+            path: 'fullAddress',
+            required: true,
         }
-        ],
+    ],
 }
 
 
