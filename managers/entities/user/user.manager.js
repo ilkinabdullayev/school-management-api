@@ -22,7 +22,7 @@ module.exports = class User {
 
     async __createUser({username, email, password, role, res}){
         const user = {username, email, password, role};
-        const result = await this.validators.user.create(user);
+        const result = await this.validators.user.create({ ...user });
         if(result) return { error : result };
 
         let createdUser;
