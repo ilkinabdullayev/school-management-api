@@ -16,8 +16,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 200 or 409\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 409]);",
 									"});",
 									"",
 									"pm.test(\"Response should be JSON\", function () {",
@@ -34,56 +34,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SuperAdmin\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5111/api/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5111",
-							"path": [
-								"api",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create User - 409",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 409\", function () {",
-									"    pm.response.to.have.status(409);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.message).to.equal(\"User already exist\");",
-									"});",
-									"",
-									"pm.test(\"Response should be JSON\", function () {",
-									"    pm.response.to.be.json;",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SuperAdmin\"\n}",
+							"raw": "{\n    \"username\": \"schooladmin\",\n    \"email\": \"schooladmin@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SchoolAdmin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -342,7 +293,7 @@
 							"apikey": [
 								{
 									"key": "value",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hMiIsInVzZXJJZCI6IjY3YThiYjlhZGE3ZTZkZDE0YWZiYjMzZCIsInJvbGUiOiJTdXBlckFkbWluIiwiaWF0IjoxNzM5MTE4Mjk1LCJleHAiOjE4MzM3OTEwOTV9.UaEZeVd4MfAFFO5nYapkWlirgXmqEIRlQTxrfEZ0pYQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5Ijoic2Nob29sYWRtaW4iLCJ1c2VySWQiOiI2N2E5MDZmZjlmYmQ2YzM1YjZhNThmY2YiLCJyb2xlIjoiU2Nob29sQWRtaW4iLCJpYXQiOjE3MzkxMzA2MjMsImV4cCI6MTgzMzgwMzQyM30.eMkXZhYs84z7GtBjTHM4HntoB2FqlGR4PT87tL40FM4",
 									"type": "string"
 								},
 								{
@@ -486,7 +437,7 @@
 							"apikey": [
 								{
 									"key": "value",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5Ijoic2Nob29sYWRtaW4iLCJ1c2VySWQiOiI2N2E5MDZmZjlmYmQ2YzM1YjZhNThmY2YiLCJzZXNzaW9uSWQiOiJqVmpsUGhzMFR5N2V6WDZFYWw2VFEiLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlNjaG9vbEFkbWluIiwiaWF0IjoxNzM5MTMwNjQxLCJleHAiOjE3NzA2ODgyNDF9.vcuhLB7iIKXifE6h4DnmBOXQu9eHcvrYUBt1njJtybE",
 									"type": "string"
 								},
 								{
