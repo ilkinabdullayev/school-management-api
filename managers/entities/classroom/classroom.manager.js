@@ -14,7 +14,6 @@ module.exports = class Classroom {
             'get=__getAllClassrooms',
             'delete=__deleteClassroom',
             'enroll',
-            'unregister',
             'put=__updateClassroom'
         ];
     }
@@ -94,35 +93,6 @@ module.exports = class Classroom {
         const result = await this.validators.classroom.enroll({ classroomId, studentId });
         if(result) return { error : result };
 
-        let classroom =  await this.mongomodels.classroom.findById(classroomId);
-        if (!classroom) {
-            this.responseDispatcher.dispatch(res, {
-                code: 404,
-                message: 'Classroom not found',
-            });
-            return { selfHandleResponse: true };
-        }
-
-        let student =  await this.mongomodels.student.findById(studentId);
-        if (!student) {
-            this.responseDispatcher.dispatch(res, {
-                code: 404,
-                message: 'Student not found',
-            });
-            return { selfHandleResponse: true };
-        }
-
-        student.classroomId = classroomId;
-        await student.save();
-
-        const allStudents = await this.mongomodels.student.find({ classroomId });
-        return {
-            classroom,
-            allStudents
-        };
-    }
-
-    async unregister({__token, classroomId, studentId, res}){
         let classroom =  await this.mongomodels.classroom.findById(classroomId);
         if (!classroom) {
             this.responseDispatcher.dispatch(res, {

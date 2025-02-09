@@ -18,7 +18,7 @@ module.exports = class School {
 
     async __createSchool({ __superAdmin, name, fullAddress }){
         const school = { name, fullAddress };
-        const result = await this.validators.school.create(school);
+        const result = await this.validators.school.create({...school});
         if(result) return { error : result };
 
         school.created_by = __superAdmin.userId;
