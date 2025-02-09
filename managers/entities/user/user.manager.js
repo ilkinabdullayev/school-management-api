@@ -25,7 +25,19 @@ module.exports = class User {
         const result = await this.validators.user.create(user);
         if(result) return { error : result };
 
-        const createdUser = await this.saveUserWithPassword(user, res);
+        let createdUser;
+        try {
+            user.password = await bcrypt.hash(user.password, 10);
+            createdUser =  await this.mongomodels.user.create(user)
+        } catch (e) {
+            if (e.errorResponse.code === 11000) {
+                this.responseDispatcher.dispatch(res, {
+                    code: 409,
+                    message: 'User already exist',
+                });
+                return { selfHandleResponse: true };
+            }
+        }
 
         const longToken  = this.tokenManager.genLongToken({userId: createdUser._id, userKey: createdUser.username, role });
         return {
@@ -120,20 +132,5 @@ module.exports = class User {
 
         await user.deleteOne( { id: __id });
         return user;
-    }
-
-    async saveUserWithPassword(user, res) {
-        try {
-            user.password = await bcrypt.hash(user.password, 10);
-            return await this.mongomodels.user.create(user)
-        } catch (e) {
-            if (e.errorResponse.code === 11000) {
-                this.responseDispatcher.dispatch(res, {
-                    code: 409,
-                    message: 'User already exist',
-                });
-                return { selfHandleResponse: true };
-            }
-        }
     }
 }

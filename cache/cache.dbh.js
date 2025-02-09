@@ -164,6 +164,9 @@ module.exports = ({ prefix, url}) => {
             },
         },
         key: {
+            setWithKeepTtl: async (key, data) => {
+                await redisClient.call('SET', key, data, 'KEEPTTL');
+            },
             expire: async ({ key, expire }) => {
                 let result = await redisClient.expire(key, expire);
                 return result;

@@ -25,6 +25,9 @@ const LONG_TOKEN_SECRET                = process.env.LONG_TOKEN_SECRET || null;
 const SHORT_TOKEN_SECRET               = process.env.SHORT_TOKEN_SECRET || null;
 const NACL_SECRET                      = process.env.NACL_SECRET || null;
 
+const IP_RATE_LIMIT                      = process.env.IP_RATE_LIMIT || 100;
+const IP_RATE_WINDOW                           = process.env.IP_RATE_WINDOW || 60;
+
 if(!LONG_TOKEN_SECRET || !SHORT_TOKEN_SECRET || !NACL_SECRET) {
     throw Error('missing .env variables check index.config');
 }
@@ -45,6 +48,8 @@ config.dotEnv = {
     ADMIN_URL,
     LONG_TOKEN_SECRET,
     SHORT_TOKEN_SECRET,
+    IP_RATE_LIMIT,
+    IP_RATE_WINDOW
 };
 
 
