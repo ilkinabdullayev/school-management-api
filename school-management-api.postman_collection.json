@@ -1,0 +1,1196 @@
+{
+	"info": {
+		"_postman_id": "80912777-b5eb-4edc-ab5c-2897a64e2d2f",
+		"name": "School Management Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "743068"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response should be JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SuperAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User - 409",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"User already exist\");",
+									"});",
+									"",
+									"pm.test(\"Response should be JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SuperAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hMiIsInVzZXJJZCI6IjY3YThiYjlhZGE3ZTZkZDE0YWZiYjMzZCIsInNlc3Npb25JZCI6IjNqR3kwQ0pyNkxieDRsNFEyYXdfciIsImRldmljZUlkIjoiMzQ0OWM5ZTVlMzMyZjFkYmI4MTUwNWNkNzM5ZmJmM2YiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTczOTExMTQzOSwiZXhwIjoxNzcwNjY5MDM5fQ.oo82aMGIvQBfvFqmSEkVDwp4w5rNePvJzBdo9XCm9-8",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ilkina2\",\n    \"email\": \"ilkina2@test.com\",\n    \"password\": \"test12345678\",\n    \"role\": \"SuperAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users?id=67a8bb9ada7e6dd14afbb33d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a8bb9ada7e6dd14afbb33d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTIiLCJ1c2VySWQiOiI2N2E3OWVjY2FmZTI1NDVkOWU5MjFlNDYiLCJzZXNzaW9uSWQiOiI5M0hqR21LZW82NlpWcUw4Sy1JdmciLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlNjaG9vbEFkbWluIiwiaWF0IjoxNzM5MDM4NDMxLCJleHAiOjE3NzA1OTYwMzF9.MdCv95Gz0BVi-GzWlZG6hgr-OefUJ4T29Zb3PdlKM9o",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test137\",\n    \"email\": \"test12@test.com\",\n    \"password\": \"sdsdsddsdsdsds dsdsdsd\",\n    \"role\": \"SuperAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users?id=67a78dbcbe1edc6dea3049c7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a78dbcbe1edc6dea3049c7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJNWXFUQ1hSYmpGRnFzMGRmTG11OUUiLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDg1MzEsImV4cCI6MTc3MDYwNjEzMX0.qjVvO7yN5d2bzEJ0dtw-_QI3xTv3BorWpvdjfllsgfo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test137\",\n    \"email\": \"test12@test.com\",\n    \"password\": \"sdsdsddsdsdsds dsdsdsd\",\n    \"role\": \"SuperAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users?id=67a78dbcbe1edc6dea3049c7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a78dbcbe1edc6dea3049c7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All users",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJ0d3RhWk9WVXhZT01BLTdWbnk5VkoiLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwMzkxMjgsImV4cCI6MTc3MDU5NjcyOH0.VdOriejhsmGcUC5u_uzWz0K2lX7I_qcZ539ouf15AG8",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "whoAmI",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hIiwidXNlcklkIjoiNjdhODk2OTE5NGNmOThjYjgwZTkyOTI0Iiwic2Vzc2lvbklkIjoiaS1RNjlfXzFLWmVROXY4d3FGUnRuIiwiZGV2aWNlSWQiOiIzNDQ5YzllNWUzMzJmMWRiYjgxNTA1Y2Q3MzlmYmYzZiIsInJvbGUiOiJTdXBlckFkbWluIiwiaWF0IjoxNzM5MTAxODYwLCJleHAiOjE3NzA2NTk0NjB9.HIdRX7kltfB188eH0W806TfNqbPdOfZewiSZ1AW6Q9M",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/users/whoAmI",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users",
+								"whoAmI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shortToken",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hMiIsInVzZXJJZCI6IjY3YThiYjlhZGE3ZTZkZDE0YWZiYjMzZCIsInJvbGUiOiJTdXBlckFkbWluIiwiaWF0IjoxNzM5MTE4Mjk1LCJleHAiOjE4MzM3OTEwOTV9.UaEZeVd4MfAFFO5nYapkWlirgXmqEIRlQTxrfEZ0pYQ",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/token/v1_createShortToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"token",
+								"v1_createShortToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"longToken should exist\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property(\"longToken\");",
+									"});",
+									"",
+									"pm.test(\"Response should be JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ilkina2@test.com\",\n    \"password\": \"test12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Invalid password\");",
+									"});",
+									"",
+									"pm.test(\"Response should be JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ilkina2@test.com\",\n    \"password\": \"test12345678910\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "school",
+			"item": [
+				{
+					"name": "Create School",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hello Kitty School\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/schools",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"schools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update School",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ilkin\",\n    \"fullAddress\": \"ss\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/schools?id=67a7c0ed7a628ad2ff82ba40",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"schools"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7c0ed7a628ad2ff82ba40"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete School",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ilkin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/schools?id=67a7bb213ef69cdc7716023f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"schools"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7bb213ef69cdc7716023f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "School By Id",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/schools?id=67a7b8a6ab2f8c3e5c88180a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"schools"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7b8a6ab2f8c3e5c88180a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All schools",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/schools",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"schools"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "classroom",
+			"item": [
+				{
+					"name": "Find by Id",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTIiLCJ1c2VySWQiOiI2N2E3OWVjY2FmZTI1NDVkOWU5MjFlNDYiLCJzZXNzaW9uSWQiOiI5M0hqR21LZW82NlpWcUw4Sy1JdmciLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlNjaG9vbEFkbWluIiwiaWF0IjoxNzM5MDM4NDMxLCJleHAiOjE3NzA1OTYwMzF9.MdCv95Gz0BVi-GzWlZG6hgr-OefUJ4T29Zb3PdlKM9o",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms?id=67a7c9263fe9b8eecd8e66c9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7c9263fe9b8eecd8e66c9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by Id",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms?id=67a7c756b5f09e8f417631d6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7c756b5f09e8f417631d6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All classrooms",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Classroom",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Math Room A1\",\n    \"schoolId\": \"67a7c74eb5f09e8f417631d3\", // Replace with an actual school ObjectId\n    \"capacity\": 30,\n    \"resources\": [\n        \"Whiteboard2\",\n        \"Projector\",\n        \"Desks\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms?id=67a7c756b5f09e8f417631d6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7c756b5f09e8f417631d6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll student",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hIiwidXNlcklkIjoiNjdhODk2OTE5NGNmOThjYjgwZTkyOTI0Iiwic2Vzc2lvbklkIjoiaS1RNjlfXzFLWmVROXY4d3FGUnRuIiwiZGV2aWNlSWQiOiIzNDQ5YzllNWUzMzJmMWRiYjgxNTA1Y2Q3MzlmYmYzZiIsInJvbGUiOiJTdXBlckFkbWluIiwiaWF0IjoxNzM5MTAxODYwLCJleHAiOjE3NzA2NTk0NjB9.HIdRX7kltfB188eH0W806TfNqbPdOfZewiSZ1AW6Q9M",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"classroomId\": \"67a7ce5aec0eeac210674512\",\n    \"studentId\": \"67a7d866e70596bbca14977b\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms/enroll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms",
+								"enroll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Classroom",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxraW5hMiIsInVzZXJJZCI6IjY3YThiYjlhZGE3ZTZkZDE0YWZiYjMzZCIsInNlc3Npb25JZCI6Ik5xZWJIRzhwZUZqTy1YQUZfT2FBQyIsImRldmljZUlkIjoiMzQ0OWM5ZTVlMzMyZjFkYmI4MTUwNWNkNzM5ZmJmM2YiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTczOTExODMwNSwiZXhwIjoxNzcwNjc1OTA1fQ.YaHEaE5FEE89buX_O1_o0StIiFFqJdYGzdJkTEVehH0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Math Room A1\",\n    \"schoolId\": \"67a7c74eb5f09e8f417631d3\", // Replace with an actual school ObjectId\n    \"capacity\": 30,\n    \"resources\": [\n        \"Whiteboard\",\n        \"Projector\",\n        \"Desks\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/classrooms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"classrooms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "Create Student",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"Alice2\",\n    \"lastname\": \"Johnson2\",\n    \"age\": 14,\n    \"grade\": \"9th\",\n    \"classroomId\": \"67a7c9263fe9b8eecd8e66c9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/students",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"Alice22\",\n    \"lastname\": \"Johnson2\",\n    \"age\": 14,\n    \"grade\": \"9th\",\n    \"classroomId\": \"67a7c9263fe9b8eecd8e66c9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/students?id=67a7d353f22e4c5c14a40c72",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7d353f22e4c5c14a40c72"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All students by classroom",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/students?classroomId=67a7ce5aec0eeac210674516",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "classroomId",
+									"value": "67a7ce5aec0eeac210674516"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student By id",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5111/api/students?id=67a7d353f22e4c5c14a40c72",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7d353f22e4c5c14a40c72"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyS2V5IjoiaWxkdXplYTMiLCJ1c2VySWQiOiI2N2E3YTE2ZDZiMmEwZTE1ZWMwYzE4NGMiLCJzZXNzaW9uSWQiOiJwbEg5d3oyazNxdXhZSmFfdEZQQ20iLCJkZXZpY2VJZCI6IjM0NDljOWU1ZTMzMmYxZGJiODE1MDVjZDczOWZiZjNmIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJpYXQiOjE3MzkwNDQ5NTEsImV4cCI6MTc3MDYwMjU1MX0.U4cIgXDNx7j7w9NwHhuuZkWSkWVKIDEunshIIHENef0",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"Alice22\",\n    \"lastname\": \"Johnson2\",\n    \"age\": 14,\n    \"grade\": \"9th\",\n    \"classroomId\": \"67a7c9263fe9b8eecd8e66c9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5111/api/students?id=67a7d353f22e4c5c14a40c72",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5111",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67a7d353f22e4c5c14a40c72"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
